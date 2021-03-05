@@ -19,13 +19,13 @@ public class toTitleScript : MonoBehaviour
 
     }
 
-    public void toTitleButtonTapped()
+    public void ToTitleButtonTapped()
     {
         Debug.Log("タイトルへ");
         SceneManager.LoadScene(0);
     }
 
-    public void tweet()
+    public void Tweet()
     {
         Debug.Log("ツイート");
         string sentence = "バスケットボールを" + resultTimeDouble + "秒回しました";

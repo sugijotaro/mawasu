@@ -21,13 +21,13 @@ public class GameMasterScript : MonoBehaviour
         {
             if (a == false)
             {
-                StartCoroutine(finishEffect());
+                StartCoroutine(FinishEffect());
                 a = true;
             }
         }
     }
 
-    IEnumerator finishEffect()
+    IEnumerator FinishEffect()
     {
         yield return new WaitForSeconds(1.5f);
 

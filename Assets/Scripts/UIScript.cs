@@ -15,7 +15,7 @@ public class UIScript : MonoBehaviour
     public Text title;
     public Text version;
     public RectTransform whiteboard;
-    public Text CountDown;
+    public Text countDownText;
     public Text time;
     public Image watch;
     public GameMasterScript gameMasterScript;
@@ -30,13 +30,13 @@ public class UIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CountDown.enabled = false;
+        countDownText.enabled = false;
         time.enabled = false;
         watch.enabled = false;
         initilal = whiteboard.transform.position;
         Debug.Log(initilal + "white");
 
-        version.text = "ver1.14";
+        version.text = "ver1.15";
         /*
             1.00　リリース　2021.2.28
             1.10　スマホ対応　2021.3.1
@@ -45,6 +45,7 @@ public class UIScript : MonoBehaviour
             1.13　スマホ版操作改善　2021.3.2
             1.131　キャッシュを残さないように　2021.3.2
             1.14　スマホ版操作改善　update関数の方で分岐をつけた　2021.3.4
+            1.15　バウンド、タップの効果音追加、回転エフェクト追加　2021.3.5
         */
     }
 
@@ -78,7 +79,7 @@ public class UIScript : MonoBehaviour
                 {
                     gameMasterScript.resultTime = countup;
                 }
-                finish();
+                Finish();
 
                 a = true;
             }
@@ -98,56 +99,58 @@ public class UIScript : MonoBehaviour
         version.enabled = false;
         startButton.SetActive(false);
 
-        StartCoroutine(countDown());
+        StartCoroutine(CountDown());
     }
 
-    IEnumerator countDown()
+    IEnumerator CountDown()
     {
+        mask.SetActive(false);
         yield return new WaitForSeconds(1.5f);
-        CountDown.text = "Ready";
-        CountDown.fontSize = 100;
-        CountDown.enabled = true;
+        countDownText.text = "Ready";
+        countDownText.fontSize = 100;
+        countDownText.enabled = true;
         time.enabled = true;
         watch.enabled = true;
-        mask.SetActive(false);
 
         yield return new WaitForSeconds(1.2f);
         if (b == false)
         {
-            CountDown.text = "GO!";
-            CountDown.fontSize = 130;
+            countDownText.text = "GO!";
+            countDownText.fontSize = 130;
             countup = 0.0f;
             counting = true;
 
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = startSE;
+            audioSource.volume = 0.5f;
             audioSource.Play();
         }
 
         yield return new WaitForSeconds(0.2f);
         if (b == false)
         {
-            CountDown.enabled = false;
+            countDownText.enabled = false;
         }
     }
 
-    void finish()
+    void Finish()
     {
-        StartCoroutine(finishEffect());
+        StartCoroutine(FinishEffect());
     }
 
-    IEnumerator finishEffect()
+    IEnumerator FinishEffect()
     {
-        CountDown.text = "Finish";
-        CountDown.fontSize = 100;
-        CountDown.enabled = true;
+        countDownText.text = "Finish";
+        countDownText.fontSize = 100;
+        countDownText.enabled = true;
 
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.clip = finishSE;
+        audioSource.volume = 0.5f;
         audioSource.Play();
 
         yield return new WaitForSeconds(1.5f);
-        CountDown.enabled = false;
+        countDownText.enabled = false;
         mask.SetActive(true);
     }
 }

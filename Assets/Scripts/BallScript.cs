@@ -9,7 +9,12 @@ public class BallScript : MonoBehaviour
     public UIScript uiScript;
     public GameMasterScript gameMasterScript;
     public GameObject AccelerateButton;
+    public GameObject AccelerateParticle;
     Vector3 initial;
+    IEnumerator routine;
+    public AudioClip bound;
+    public AudioClip tap;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +25,13 @@ public class BallScript : MonoBehaviour
         initial = this.gameObject.transform.position;
 
         AccelerateButton.active = false;
+        AccelerateParticle.SetActive(false);
+
+        routine = AccelerateEffect();
+
+
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = tap;
     }
 
     // Update is called once per frame
@@ -38,7 +50,7 @@ public class BallScript : MonoBehaviour
         }
         if (rigidbody.angularVelocity.magnitude < 1 && isRotating)
         {
-            gameOver();
+            GameOver();
         }
 
         if (uiScript.start == true)
@@ -54,6 +66,8 @@ public class BallScript : MonoBehaviour
         {
             Debug.Log(rigidbody.angularVelocity.magnitude);
         }
+
+        AccelerateParticle.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.1f, this.transform.position.z);
     }
 
     IEnumerator GameStart()
@@ -74,6 +88,14 @@ public class BallScript : MonoBehaviour
             Debug.Log("加速");
             Vector3 v = new Vector3(0, 1, 0);
             rigidbody.AddTorque(v, ForceMode.Impulse);
+
+            StopCoroutine(routine);
+            routine = null;
+            routine = AccelerateEffect();
+            StartCoroutine(routine);
+
+            audioSource.volume = 0.5f;
+            audioSource.Play();
         }
     }
 
@@ -81,17 +103,32 @@ public class BallScript : MonoBehaviour
     {
         if (collision.gameObject.name == "Floor")
         {
-            gameOver();
+            GameOver();
+            AccelerateButton.active = false;
+        }
+
+        if (gameMasterScript.gameOver)
+        {
+            audioSource.clip = bound;
+            audioSource.volume = collision.relativeVelocity.magnitude / 10 * 0.5f;
+            audioSource.Play();
         }
     }
 
-    void gameOver()
+    void GameOver()
     {
         if (gameMasterScript.gameOver == false)
         {
             gameMasterScript.gameOver = true;
             isRotating = false;
         }
+    }
+
+    IEnumerator AccelerateEffect()
+    {
+        AccelerateParticle.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        AccelerateParticle.SetActive(false);
     }
 
 }

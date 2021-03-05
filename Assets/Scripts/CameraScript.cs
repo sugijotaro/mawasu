@@ -28,9 +28,4 @@ public class CameraScript : MonoBehaviour
             transform.DOMove(new Vector3(0, -1.75f, -2), 1.2f);
         }
     }
-
-    void moveCamera()
-    {
-
-    }
 }
