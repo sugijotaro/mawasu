@@ -36,7 +36,7 @@ public class UIScript : MonoBehaviour
         initilal = whiteboard.transform.position;
         Debug.Log(initilal + "white");
 
-        version.text = "ver1.15";
+        version.text = "ver1.16";
         /*
             1.00　リリース　2021.2.28
             1.10　スマホ対応　2021.3.1
@@ -45,7 +45,8 @@ public class UIScript : MonoBehaviour
             1.13　スマホ版操作改善　2021.3.2
             1.131　キャッシュを残さないように　2021.3.2
             1.14　スマホ版操作改善　update関数の方で分岐をつけた　2021.3.4
-            1.15　バウンド、タップの効果音追加、回転エフェクト追加　2021.3.5
+            1.15　バウンド、タップの効果音追加、回転エフェクト追加、名前入力スマホでできるように　2021.3.5
+            1.16　軽微な不具合修正　2021.3.6
         */
     }
 
@@ -104,8 +105,9 @@ public class UIScript : MonoBehaviour
 
     IEnumerator CountDown()
     {
+        yield return new WaitForSeconds(1.0f);
         mask.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         countDownText.text = "Ready";
         countDownText.fontSize = 100;
         countDownText.enabled = true;

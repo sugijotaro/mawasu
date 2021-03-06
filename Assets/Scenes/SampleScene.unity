@@ -6894,6 +6894,12 @@ MonoBehaviour:
   - eventID: 2
     callback:
       m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2007417447}
           m_MethodName: AccelerateCubeTapped

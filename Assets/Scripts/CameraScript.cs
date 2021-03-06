@@ -25,7 +25,7 @@ public class CameraScript : MonoBehaviour
 
         if (startAnimation)
         {
-            transform.DOMove(new Vector3(0, -1.75f, -2), 1.2f);
+            transform.DOMove(new Vector3(0, -1.75f, -2), 1.0f);
         }
     }
 }
