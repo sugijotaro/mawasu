@@ -10,5 +10,5 @@ namespace naichilab
 		public Text NoText;
 		public Text NameText;
 		public Text ScoreText;
-	}
+    }
 }

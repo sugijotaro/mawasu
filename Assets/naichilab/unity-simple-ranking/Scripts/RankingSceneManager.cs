@@ -84,7 +84,7 @@ namespace naichilab
 
             //ハイスコア取得
             {
-                highScoreLabel.text = "取得中...";
+                highScoreLabel.text = "ランキング取得中...";
 
                 var hiScoreCheck = new YieldableNcmbQuery<NCMBObject>(_board.ClassName);
                 hiScoreCheck.WhereEqualTo(OBJECT_ID, ObjectID);
@@ -144,8 +144,7 @@ namespace naichilab
         private IEnumerator SendScoreEnumerator()
         {
             sendScoreButton.interactable = false;
-            highScoreLabel.text = "送信中...";
-
+            highScoreLabel.text = "ランキングを更新しています...";
             //ハイスコア送信
             if (_ncmbRecord == null)
             {
