@@ -6,23 +6,22 @@ public class GameMasterScript : MonoBehaviour
 {
     public bool gameOver = false;
     public float resultTime;
-    bool a = false;
+    private bool isProcessing = false;
+    private const string HighScoreKey = "HighScore";
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        LoadHighScore();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (gameOver)
         {
-            if (a == false)
+            if (!isProcessing)
             {
                 StartCoroutine(FinishEffect());
-                a = true;
+                isProcessing = true;
             }
         }
     }
@@ -31,9 +30,43 @@ public class GameMasterScript : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        string a = resultTime.ToString("f2");
-        double z = double.Parse(a);
-        toTitleScript.resultTimeDouble = z;
-        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(z);
+        string resultTimeString = resultTime.ToString("f2");
+        double resultTimeDouble = double.Parse(resultTimeString);
+        toTitleScript.resultTimeDouble = resultTimeDouble;
+
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(resultTimeDouble);
+
+        SaveResultTime(resultTimeDouble);
+    }
+
+    void SaveResultTime(double time)
+    {
+        double highScore = LoadHighScore();
+
+        if (time > highScore)
+        {
+            PlayerPrefs.SetFloat(HighScoreKey, (float)time);
+            PlayerPrefs.Save();
+            Debug.Log("新しいハイスコアを保存しました: " + time);
+        }
+        else
+        {
+            Debug.Log("ハイスコアは更新されませんでした。現在のハイスコア: " + highScore);
+        }
+    }
+
+    double LoadHighScore()
+    {
+        if (PlayerPrefs.HasKey(HighScoreKey))
+        {
+            float savedTime = PlayerPrefs.GetFloat(HighScoreKey);
+            Debug.Log("保存されたハイスコアを読み込みました: " + savedTime);
+            return savedTime;
+        }
+        else
+        {
+            Debug.Log("ハイスコアが見つかりませんでした。");
+            return 0.0;
+        }
     }
 }

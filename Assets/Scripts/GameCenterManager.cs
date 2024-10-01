@@ -54,4 +54,39 @@ public class GameCenterManager : MonoBehaviour
             }
         });
     }
+
+    public void ReportScore(double timeInSeconds, string leaderboardID)
+    {
+        if (Social.localUser.authenticated)
+        {
+            long score = (long)(timeInSeconds * 1000);
+
+            Social.ReportScore(score, leaderboardID, success =>
+            {
+                if (success)
+                {
+                    Debug.Log("スコアを送信しました: " + score);
+                }
+                else
+                {
+                    Debug.Log("スコアの送信に失敗しました");
+                }
+            });
+        }
+        else
+        {
+            Debug.Log("ユーザーが認証されていません");
+        }
+    }
+    public void ShowLeaderboard(string leaderboardID)
+    {
+        if (Social.localUser.authenticated)
+        {
+            GameCenterPlatform.ShowLeaderboardUI(leaderboardID, UnityEngine.SocialPlatforms.TimeScope.AllTime);
+        }
+        else
+        {
+            Debug.Log("ユーザーが認証されていません");
+        }
+    }
 }
