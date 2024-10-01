@@ -1,179 +1,92 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-//using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    bool isMobile;
-
     private Vector3 moveTo;
     private Vector3 initialPosition;
-    private bool beRay = false;
+    private bool isDragging = false;
+    private int activeFingerId = -1;
     public BallScript ballScript;
 
-
-#if !UNITY_EDITOR && UNITY_WEBGL
-    [System.Runtime.InteropServices.DllImport("__Internal")]
-    static extern bool IsMobile();
-#endif
-
-    // Start is called before the first frame update
     void Start()
     {
-#if !UNITY_EDITOR && UNITY_WEBGL
-        isMobile = IsMobile();
-#endif
-
-        //GetComponent<Text>().text = isMobile ? "Mobile" : "PC";
-        Debug.Log(isMobile ? "Mobile" : "PC");
-
         initialPosition = this.transform.position;
-        Debug.Log(initialPosition);
+        Debug.Log("Initial Position: " + initialPosition);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log(Input.touchCount);
-        if (isMobile)
+        // タッチ入力があるか確認
+        if (Input.touchCount > 0)
         {
-            //Mobile
+            // すべてのタッチをループ
             for (int i = 0; i < Input.touchCount; i++)
             {
-                // タッチ情報をコピー
-                Touch t = Input.GetTouch(i);
-                //タッチした位置からRayを飛ばす
-                Ray ray = Camera.main.ScreenPointToRay(t.position);
-                Debug.Log(ray);
-                RaycastHit hit = new RaycastHit();
-                if (Physics.Raycast(ray, out hit))
+                Touch touch = Input.GetTouch(i);
+
+                // デバッグログでタッチ情報を出力
+                Debug.Log($"Touch {i}: fingerId={touch.fingerId}, phase={touch.phase}, position={touch.position}");
+
+                // タッチ開始時
+                if (touch.phase == TouchPhase.Began)
                 {
-                    //Rayを飛ばしてあたったオブジェクトが自分自身だったら
-                    if (hit.collider.gameObject == transform.Find("Cube").gameObject)
-                    {
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            RayCheckMobile();
-                        }
-
-                        if (beRay)
-                        {
-                            MovePoisitionMobile();
-                        }
-
-                        if (Input.GetMouseButtonUp(0))
-                        {
-                            beRay = false;
-                        }
-                    }
+                    RayCheck(touch);
                 }
-            }
-        }
-        else
-        {
-            //PC
-            if (Input.GetMouseButtonDown(0))
-            {
-                RayCheck();
-            }
 
-            if (beRay)
-            {
-                MovePoisition();
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                beRay = false;
-            }
-        }
-    }
-
-    private void RayCheckMobile()
-    {
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            // タッチ情報をコピー
-            Touch t = Input.GetTouch(i);
-            //タッチした位置からRayを飛ばす
-            Ray ray = Camera.main.ScreenPointToRay(t.position);
-            RaycastHit hit = new RaycastHit();
-            if (Physics.Raycast(ray, out hit))
-            {
-                //Rayを飛ばしてあたったオブジェクトが自分自身だったら
-                if (hit.collider.gameObject == transform.Find("Cube").gameObject)
+                // アクティブな指の場合のみ処理
+                if (touch.fingerId == activeFingerId)
                 {
-                    ray = Camera.main.ScreenPointToRay(t.position);
-
-                    if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity) && hit.collider == transform.Find("Cube").gameObject.GetComponent<Collider>())
+                    if (isDragging && (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary))
                     {
-                        beRay = true;
+                        MovePosition(touch);
                     }
-                    else
+
+                    if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                     {
-                        beRay = false;
+                        isDragging = false;
+                        activeFingerId = -1;
+                        Debug.Log("Touch ended or canceled for fingerId: " + touch.fingerId);
                     }
                 }
             }
         }
     }
 
-    private void MovePoisitionMobile()
+    private void RayCheck(Touch touch)
     {
-        for (int i = 0; i < Input.touchCount; i++)
+        Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
         {
-            // タッチ情報をコピー
-            Touch t = Input.GetTouch(i);
-            //タッチした位置からRayを飛ばす
-            Ray ray = Camera.main.ScreenPointToRay(t.position);
-            RaycastHit hit = new RaycastHit();
-            if (Physics.Raycast(ray, out hit))
+            // Ray が「Cube」にヒットした場合
+            GameObject cube = transform.Find("Cube").gameObject;
+            if (hit.collider.gameObject == cube)
             {
-                //Rayを飛ばしてあたったオブジェクトが自分自身だったら
-                if (hit.collider.gameObject == transform.Find("Cube").gameObject)
-                {
-                    Vector3 mousePos = t.position;
-                    mousePos.z = initialPosition.z + 2;
+                isDragging = true;
+                activeFingerId = touch.fingerId;
+                Debug.Log("Ray hit Cube with fingerId: " + activeFingerId);
 
-                    moveTo = Camera.main.ScreenToWorldPoint(mousePos);
-                    moveTo.y = initialPosition.y;
-                    transform.position = moveTo;
-                }
+                // 「Cube」をタップしたときの処理
+                AccelerateCubeTapped();
             }
         }
     }
 
-    private void RayCheck()
+    private void MovePosition(Touch touch)
     {
-        Ray ray = new Ray();
-        RaycastHit hit = new RaycastHit();
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 touchPos = touch.position;
+        touchPos.z = Camera.main.WorldToScreenPoint(transform.position).z;
 
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity) && hit.collider == transform.Find("Cube").gameObject.GetComponent<Collider>())
-        {
-            beRay = true;
-        }
-        else
-        {
-            beRay = false;
-        }
-    }
-
-    private void MovePoisition()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = initialPosition.z + 2;
-
-        moveTo = Camera.main.ScreenToWorldPoint(mousePos);
+        moveTo = Camera.main.ScreenToWorldPoint(touchPos);
         moveTo.y = initialPosition.y;
         transform.position = moveTo;
+
+        Debug.Log("Moved to position: " + transform.position + " using touch with fingerId: " + touch.fingerId);
     }
 
     public void AccelerateCubeTapped()
     {
-        Debug.Log("cubeタップ");
+        Debug.Log("Cube tapped");
         ballScript.Accelerate();
     }
-
 }
