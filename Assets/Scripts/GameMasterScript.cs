@@ -9,13 +9,12 @@ public class GameMasterScript : MonoBehaviour
     public static GameMasterScript Instance { get; private set; }
 
     public bool gameOver = false;
-    public float resultTime;
+    public double resultTime;
     private bool isProcessing = false;
     private const string HighScoreKey = "HighScore";
-    public Text currentScoreText;
-    public Text highScoreText;
 
-    private double highScore = 0.0;
+    public double highScore = 0.0;
+    public bool isNewHighScore = false;
 
     void Awake()
     {
@@ -33,7 +32,6 @@ public class GameMasterScript : MonoBehaviour
     void Start()
     {
         highScore = LoadHighScore();
-        highScoreText.text = "ハイスコア: " + highScore.ToString("f2") + " 秒";
     }
 
     void Update()
@@ -55,22 +53,11 @@ public class GameMasterScript : MonoBehaviour
         string resultTimeString = resultTime.ToString("f2");
         double resultTimeDouble = double.Parse(resultTimeString);
 
+        isNewHighScore = SaveResultTime(resultTimeDouble);
+
+        resultTime = resultTimeDouble;
+
         SceneManager.LoadScene("Ranking", LoadSceneMode.Additive);
-        
-        bool isNewHighScore = SaveResultTime(resultTimeDouble);
-
-        currentScoreText.text = "今回のスコア: " + resultTimeDouble.ToString("f2") + " 秒";
-
-        if (isNewHighScore)
-        {
-            Debug.Log("ハイスコア更新！");
-        }
-        else
-        {
-
-        }
-
-        highScoreText.text = "ハイスコア: " + highScore.ToString("f2") + " 秒";
     }
 
     bool SaveResultTime(double time)
