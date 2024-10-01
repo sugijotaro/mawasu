@@ -1,20 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class GameMasterScript : MonoBehaviour
 {
+    public static GameMasterScript Instance { get; private set; }
+
     public bool gameOver = false;
     public float resultTime;
     private bool isProcessing = false;
     private const string HighScoreKey = "HighScore";
-
-    public TextMeshProUGUI currentScoreText;
-    public TextMeshProUGUI highScoreText;
+    public Text currentScoreText;
+    public Text highScoreText;
 
     private double highScore = 0.0;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -49,11 +63,14 @@ public class GameMasterScript : MonoBehaviour
 
         if (isNewHighScore)
         {
+            Debug.Log("ハイスコア更新！");
         }
         else
         {
+
         }
-        highScoreText.text = "ハイスコア: " + resultTimeDouble.ToString("f2") + " 秒";
+
+        highScoreText.text = "ハイスコア: " + highScore.ToString("f2") + " 秒";
     }
 
     bool SaveResultTime(double time)
@@ -63,13 +80,13 @@ public class GameMasterScript : MonoBehaviour
             PlayerPrefs.SetFloat(HighScoreKey, (float)time);
             PlayerPrefs.Save();
             Debug.Log("新しいハイスコアを保存しました: " + time);
-            highScore = time; // ハイスコアを更新
-            return true;      // ハイスコア更新
+            highScore = time;
+            return true;
         }
         else
         {
             Debug.Log("ハイスコアは更新されませんでした。現在のハイスコア: " + highScore);
-            return false;     // ハイスコア更新でない
+            return false;
         }
     }
 
