@@ -36,7 +36,7 @@ public class UIScript : MonoBehaviour
         initilal = whiteboard.transform.position;
         Debug.Log(initilal + "white");
 
-        version.text = "ver1.18";
+        version.text = "ver1.0";
         /*
             1.00　リリース　2021.2.28
             1.10　スマホ対応　2021.3.1
@@ -49,6 +49,8 @@ public class UIScript : MonoBehaviour
             1.16　軽微な不具合修正　2021.3.6
             1.17　結果発表画面変更　2021.3.8
             1.18　フォントとか見た目変更　2021.3.15
+
+            ios ver 1.0
         */
     }
 
