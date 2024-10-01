@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameMasterScript : MonoBehaviour
 {
@@ -9,9 +11,15 @@ public class GameMasterScript : MonoBehaviour
     private bool isProcessing = false;
     private const string HighScoreKey = "HighScore";
 
+    public TextMeshProUGUI currentScoreText;
+    public TextMeshProUGUI highScoreText;
+
+    private double highScore = 0.0;
+
     void Start()
     {
-        LoadHighScore();
+        highScore = LoadHighScore();
+        highScoreText.text = "ハイスコア: " + highScore.ToString("f2") + " 秒";
     }
 
     void Update()
@@ -32,26 +40,36 @@ public class GameMasterScript : MonoBehaviour
 
         string resultTimeString = resultTime.ToString("f2");
         double resultTimeDouble = double.Parse(resultTimeString);
-        toTitleScript.resultTimeDouble = resultTimeDouble;
 
-        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(resultTimeDouble);
+        SceneManager.LoadScene("Ranking", LoadSceneMode.Additive);
+        
+        bool isNewHighScore = SaveResultTime(resultTimeDouble);
 
-        SaveResultTime(resultTimeDouble);
+        currentScoreText.text = "今回のスコア: " + resultTimeDouble.ToString("f2") + " 秒";
+
+        if (isNewHighScore)
+        {
+        }
+        else
+        {
+        }
+        highScoreText.text = "ハイスコア: " + resultTimeDouble.ToString("f2") + " 秒";
     }
 
-    void SaveResultTime(double time)
+    bool SaveResultTime(double time)
     {
-        double highScore = LoadHighScore();
-
         if (time > highScore)
         {
             PlayerPrefs.SetFloat(HighScoreKey, (float)time);
             PlayerPrefs.Save();
             Debug.Log("新しいハイスコアを保存しました: " + time);
+            highScore = time; // ハイスコアを更新
+            return true;      // ハイスコア更新
         }
         else
         {
             Debug.Log("ハイスコアは更新されませんでした。現在のハイスコア: " + highScore);
+            return false;     // ハイスコア更新でない
         }
     }
 
