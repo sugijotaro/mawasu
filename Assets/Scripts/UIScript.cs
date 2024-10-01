@@ -11,6 +11,7 @@ public class UIScript : MonoBehaviour
     bool started = false;
     bool counting = false;
     public GameObject startButton;
+    public GameObject rankingButton;
     public GameObject mask;
     public Text title;
     public Text version;
@@ -103,8 +104,16 @@ public class UIScript : MonoBehaviour
         title.enabled = false;
         version.enabled = false;
         startButton.SetActive(false);
+        rankingButton.SetActive(false);
 
         StartCoroutine(CountDown());
+    }
+    public void RankingButtonTapped()
+    {
+        Debug.Log("ランキング");       
+        
+        string leaderboardID = "com.infinity.spinningball.highscore";
+        GameCenterManager.Instance.ShowLeaderboard(leaderboardID);
     }
 
     IEnumerator CountDown()
