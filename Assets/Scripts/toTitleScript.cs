@@ -25,11 +25,11 @@ public class toTitleScript : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void Tweet()
-    {
-        Debug.Log("ツイート");
-        string sentence = "バスケットボールを" + resultTimeDouble + "秒回しました";
-        Debug.Log(sentence);
-        naichilab.UnityRoomTweet.Tweet("spinningball", sentence, "unity1week", "SpinningBall");
-    }
+    // public void Tweet()
+    // {
+    //     Debug.Log("ツイート");
+    //     string sentence = "バスケットボールを" + resultTimeDouble + "秒回しました";
+    //     Debug.Log(sentence);
+    //     naichilab.UnityRoomTweet.Tweet("spinningball", sentence, "unity1week", "SpinningBall");
+    // }
 }
