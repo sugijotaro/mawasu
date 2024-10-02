@@ -22,6 +22,7 @@ public class toTitleScript : MonoBehaviour
     public void ToTitleButtonTapped()
     {
         Debug.Log("タイトルへ");
+        Destroy(GameMasterScript.Instance.gameObject);
         SceneManager.LoadScene(0);
     }
 
