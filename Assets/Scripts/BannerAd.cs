@@ -7,10 +7,19 @@ public class BannerAd : MonoBehaviour
 
     void Start()
     {
-        string adUnitId = "ca-app-pub-6018673196408347/9367396816"; //iOS
+        string adUnitId;
+
+        #if UNITY_ANDROID
+            adUnitId = "ca-app-pub-6018673196408347/4592151662";
+        #elif UNITY_IOS
+            adUnitId = "ca-app-pub-6018673196408347/9367396816";
+        #else
+            adUnitId = "unexpected_platform";
+        #endif
+
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
 
-        AdRequest request = new AdRequest();
+        AdRequest request = new AdRequest.Builder().Build();
         bannerView.LoadAd(request);
     }
 }
