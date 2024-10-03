@@ -41,3 +41,4 @@ sysinfo.txt
 Assets/GoogleService-Info.plist
 /Assets/Firebase
 user.keystore.keystore
+Assets/google-services.json

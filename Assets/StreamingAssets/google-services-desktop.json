@@ -7,22 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1074766804993:ios:e42e7f94666cb3a04f2800",
+        "mobilesdk_app_id": "1:1074766804993:android:97b4a77a832c2cb44f2800",
         "android_client_info": {
           "package_name": "com.infinity.spinningball"
         }
       },
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD6Jl3lgLd64g3TcnjgwW6SqeQ_KvF6HKU"
+          "current_key": "AIzaSyA0JPcTmZOfk7Ua9TcQ9-TMX0O7Nou6jM8"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 0
-        },
         "appinvite_service": {
-          "status": 1
+          "other_platform_oauth_client": []
         }
       }
     }
