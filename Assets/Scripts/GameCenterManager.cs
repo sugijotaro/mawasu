@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.SocialPlatforms.GameCenter;
+using Firebase.Analytics;
 
 public class GameCenterManager : MonoBehaviour
 {
@@ -47,10 +48,14 @@ public class GameCenterManager : MonoBehaviour
             if (success)
             {
                 Debug.Log("Game Center にログインしました: " + Social.localUser.userName);
+
+                FirebaseAnalytics.LogEvent("game_center_login", new Parameter("user_name", Social.localUser.userName));
             }
             else
             {
                 Debug.Log("Game Center のログインに失敗しました");
+
+                FirebaseAnalytics.LogEvent("game_center_login_failed");
             }
         });
     }
@@ -66,27 +71,38 @@ public class GameCenterManager : MonoBehaviour
                 if (success)
                 {
                     Debug.Log("スコアを送信しました: " + score);
+
+                    FirebaseAnalytics.LogEvent("report_score", new Parameter("leaderboard_id", leaderboardID), new Parameter("score", score));
                 }
                 else
                 {
                     Debug.Log("スコアの送信に失敗しました");
+
+                    FirebaseAnalytics.LogEvent("report_score_failed", new Parameter("leaderboard_id", leaderboardID));
                 }
             });
         }
         else
         {
             Debug.Log("ユーザーが認証されていません");
+
+            FirebaseAnalytics.LogEvent("report_score_not_authenticated");
         }
     }
+
     public void ShowLeaderboard(string leaderboardID)
     {
         if (Social.localUser.authenticated)
         {
             GameCenterPlatform.ShowLeaderboardUI(leaderboardID, UnityEngine.SocialPlatforms.TimeScope.AllTime);
+
+            FirebaseAnalytics.LogEvent("show_leaderboard", new Parameter("leaderboard_id", leaderboardID));
         }
         else
         {
             Debug.Log("ユーザーが認証されていません");
+
+            FirebaseAnalytics.LogEvent("show_leaderboard_not_authenticated");
         }
     }
 }
