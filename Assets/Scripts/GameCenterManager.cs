@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SocialPlatforms;
+#if UNITY_IOS
 using UnityEngine.SocialPlatforms.GameCenter;
+#endif
 using Firebase.Analytics;
 
 public class GameCenterManager : MonoBehaviour
@@ -28,6 +30,7 @@ public class GameCenterManager : MonoBehaviour
 
     private void Awake()
     {
+        #if UNITY_IOS
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
@@ -38,10 +41,12 @@ public class GameCenterManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         AuthenticateUser();
+        #endif
     }
 
     private void AuthenticateUser()
     {
+        #if UNITY_IOS
         Social.Active = new GameCenterPlatform();
         Social.localUser.Authenticate(success =>
         {
@@ -58,10 +63,12 @@ public class GameCenterManager : MonoBehaviour
                 FirebaseAnalytics.LogEvent("game_center_login_failed");
             }
         });
+        #endif
     }
 
     public void ReportScore(double timeInSeconds, string leaderboardID)
     {
+        #if UNITY_IOS
         if (Social.localUser.authenticated)
         {
             long score = (long)(timeInSeconds * 1000);
@@ -88,10 +95,12 @@ public class GameCenterManager : MonoBehaviour
 
             FirebaseAnalytics.LogEvent("report_score_not_authenticated");
         }
+        #endif
     }
 
     public void ShowLeaderboard(string leaderboardID)
     {
+        #if UNITY_IOS
         if (Social.localUser.authenticated)
         {
             GameCenterPlatform.ShowLeaderboardUI(leaderboardID, UnityEngine.SocialPlatforms.TimeScope.AllTime);
@@ -104,5 +113,6 @@ public class GameCenterManager : MonoBehaviour
 
             FirebaseAnalytics.LogEvent("show_leaderboard_not_authenticated");
         }
+        #endif
     }
 }
