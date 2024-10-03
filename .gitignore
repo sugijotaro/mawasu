@@ -38,3 +38,4 @@ sysinfo.txt
 .DS_Store
 /.vscode
 /Logs
+Assets/GoogleService-Info.plist
