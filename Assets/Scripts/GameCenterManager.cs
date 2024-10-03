@@ -78,7 +78,7 @@ public class GameCenterManager : MonoBehaviour
                 {
                     Debug.Log("スコアの送信に失敗しました");
 
-                    FirebaseAnalytics.LogEvent("report_score_failed", new Parameter("leaderboard_id", leaderboardID));
+                    FirebaseAnalytics.LogEvent("report_score_failed", new Parameter("leaderboard_id", leaderboardID), new Parameter("score", score));
                 }
             });
         }
