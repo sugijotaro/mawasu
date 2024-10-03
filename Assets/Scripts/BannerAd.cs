@@ -19,7 +19,7 @@ public class BannerAd : MonoBehaviour
 
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
 
-        AdRequest request = new AdRequest.Builder().Build();
+        AdRequest request = new AdRequest();
         bannerView.LoadAd(request);
     }
 }

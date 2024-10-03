@@ -1,0 +1,31 @@
+{
+  "project_info": {
+    "project_number": "1074766804993",
+    "project_id": "spinningball888",
+    "storage_bucket": "spinningball888.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074766804993:ios:e42e7f94666cb3a04f2800",
+        "android_client_info": {
+          "package_name": "com.infinity.spinningball"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Jl3lgLd64g3TcnjgwW6SqeQ_KvF6HKU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
