@@ -7,6 +7,20 @@ public class BannerAd : MonoBehaviour
 
     void Start()
     {
+        bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
+
+        if (!isAdsRemoved)
+        {
+            RequestBanner();
+        }
+        else
+        {
+            Debug.Log("広告は削除されています。バナー広告を表示しません。");
+        }
+    }
+
+    void RequestBanner()
+    {
         string adUnitId;
 
         #if UNITY_ANDROID
