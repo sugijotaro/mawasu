@@ -15,7 +15,7 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
     private IExtensionProvider extensionProvider;
 
     // 商品 ID
-    private const string removeAdsProductID = "remove_ads";
+    private const string removeAdsProductID = "removeads";
 
     void Start()
     {
@@ -111,10 +111,10 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
         // プラットフォームに応じてレビュー画面を開く
 #if UNITY_IOS
         // iOS のレビューURLに遷移
-        Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_APP_ID?action=write-review");
+        Application.OpenURL("itms-apps://itunes.apple.com/app/id6736353585?action=write-review");
 #elif UNITY_ANDROID
         // Android のレビューURLに遷移
-        Application.OpenURL("market://details?id=YOUR_PACKAGE_NAME");
+        Application.OpenURL("market://details?id=com.infinity.spinningball");
 #else
         Debug.Log("このプラットフォームではレビューを書く機能はサポートされていません");
 #endif
