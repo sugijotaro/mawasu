@@ -169,4 +169,9 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
     {
         throw new NotImplementedException();
     }
+
+    public void ToTitleButtonTapped()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

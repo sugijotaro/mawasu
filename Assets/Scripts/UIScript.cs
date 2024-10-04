@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class UIScript : MonoBehaviour
@@ -12,6 +13,7 @@ public class UIScript : MonoBehaviour
     bool counting = false;
     public GameObject startButton;
     public GameObject rankingButton;
+    public GameObject settingButton;
     public GameObject mask;
     public Text title;
     public Text version;
@@ -105,6 +107,7 @@ public class UIScript : MonoBehaviour
         version.enabled = false;
         startButton.SetActive(false);
         rankingButton.SetActive(false);
+        settingButton.SetActive(false);
 
         StartCoroutine(CountDown());
     }
@@ -114,6 +117,10 @@ public class UIScript : MonoBehaviour
         
         string leaderboardID = "com.infinity.spinningball.highscoreboard";
         GameCenterManager.Instance.ShowLeaderboard(leaderboardID);
+    }
+    public void SettingButtonTapped()
+    {  
+        SceneManager.LoadScene("Setting", LoadSceneMode.Additive);
     }
 
     IEnumerator CountDown()
