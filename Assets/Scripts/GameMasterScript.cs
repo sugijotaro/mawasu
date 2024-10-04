@@ -57,7 +57,7 @@ public class GameMasterScript : MonoBehaviour
 
         resultTime = resultTimeDouble;
 
-        string leaderboardID = "com.infinity.spinningball.highscore";
+        string leaderboardID = "com.infinity.spinningball.highscoreboard";
         GameCenterManager.Instance.ReportScore(resultTimeDouble, leaderboardID);
 
         SceneManager.LoadScene("Ranking", LoadSceneMode.Additive);

@@ -112,7 +112,7 @@ public class UIScript : MonoBehaviour
     {
         Debug.Log("ランキング");       
         
-        string leaderboardID = "com.infinity.spinningball.highscore";
+        string leaderboardID = "com.infinity.spinningball.highscoreboard";
         GameCenterManager.Instance.ShowLeaderboard(leaderboardID);
     }
 
