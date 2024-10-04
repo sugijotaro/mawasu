@@ -71,7 +71,7 @@ public class GameCenterManager : MonoBehaviour
         #if UNITY_IOS
         if (Social.localUser.authenticated)
         {
-            long score = (long)(timeInSeconds * 1000);
+            long score = (long)(timeInSeconds * 100);
 
             Social.ReportScore(score, leaderboardID, success =>
             {
