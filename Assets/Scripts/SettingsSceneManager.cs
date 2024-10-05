@@ -111,7 +111,7 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
         // プラットフォームに応じてレビュー画面を開く
 #if UNITY_IOS
         // iOS のレビューURLに遷移
-        Application.OpenURL("https://apps.apple.com/us/app/id736353585?action=write-review");
+        Application.OpenURL("https://apps.apple.com/app/id6736353585?action=write-review");
 #elif UNITY_ANDROID
         // Android のレビューURLに遷移
         Application.OpenURL("https://play.google.com/store/apps/details?id=com.infinity.spinningball");
