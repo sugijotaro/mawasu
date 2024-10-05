@@ -198,6 +198,7 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
     private void OnInterstitialAdClosed()
     {
         // 広告が閉じられた後にタイトル画面に戻る
+        Destroy(GameMasterScript.Instance.gameObject);
         SceneManager.LoadScene(0);
         
         // イベントハンドラを解除
