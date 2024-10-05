@@ -172,6 +172,35 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
 
     public void ToTitleButtonTapped()
     {
+        bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
+
+        if (!isAdsRemoved)
+        {
+            if (InterstitialAdManager.Instance.IsReady)
+            {
+                Debug.Log("インタースティシャル");
+                InterstitialAdManager.Instance.ShowInterstitial();
+                InterstitialAdManager.Instance.OnAdClosed += OnInterstitialAdClosed;
+            }
+            else
+            {
+                Debug.Log("インタースティシャル広告が準備できていません。直接タイトル画面に戻ります。");
+                SceneManager.LoadScene(0);
+            }
+        }
+        else
+        {
+            Debug.Log("広告は削除されています。直接タイトル画面に戻ります。");
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    private void OnInterstitialAdClosed()
+    {
+        // 広告が閉じられた後にタイトル画面に戻る
         SceneManager.LoadScene(0);
+        
+        // イベントハンドラを解除
+        InterstitialAdManager.Instance.OnAdClosed -= OnInterstitialAdClosed;
     }
 }
