@@ -81,9 +81,9 @@ public class InterstitialAdManager : MonoBehaviour
         string adUnitId;
 
 #if UNITY_ANDROID
-        adUnitId = "ca-app-pub-6018673196408347/3541297013"; // あなたの Android 用の広告ユニットIDに置き換えてください
+        adUnitId = "ca-app-pub-6018673196408347/3541297013";
 #elif UNITY_IOS
-        adUnitId = "ca-app-pub-6018673196408347/1468198831"; // あなたの iOS 用の広告ユニットIDに置き換えてください
+        adUnitId = "ca-app-pub-6018673196408347/1468198831";
 #else
         adUnitId = "unexpected_platform";
 #endif
