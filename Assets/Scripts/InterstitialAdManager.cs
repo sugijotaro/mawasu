@@ -36,12 +36,12 @@ public class InterstitialAdManager : MonoBehaviour
         get
         {
             // 広告削除を購入しているかチェック
-            // bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
+            bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
 
-            // if (isAdsRemoved)
-            // {
-            //     return false;
-            // }
+            if (isAdsRemoved)
+            {
+                return false;
+            }
 
             return interstitialAd != null && interstitialAd.CanShowAd();
         }
@@ -63,13 +63,13 @@ public class InterstitialAdManager : MonoBehaviour
     {
         Debug.Log("LoadInterstitialAd");
         // 広告削除を購入しているかチェック
-        // bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
+        bool isAdsRemoved = PlayerPrefs.GetInt("AdsRemoved", 0) == 1;
 
-        // if (isAdsRemoved)
-        // {
-        //     Debug.Log("Ads are removed. Interstitial ad will not be loaded.");
-        //     return;
-        // }
+        if (isAdsRemoved)
+        {
+            Debug.Log("Ads are removed. Interstitial ad will not be loaded.");
+            return;
+        }
 
         // 古い広告がある場合は破棄
         if (interstitialAd != null)
@@ -81,7 +81,7 @@ public class InterstitialAdManager : MonoBehaviour
         string adUnitId;
 
 #if UNITY_ANDROID
-        adUnitId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"; // あなたの Android 用の広告ユニットIDに置き換えてください
+        adUnitId = "ca-app-pub-6018673196408347/3541297013"; // あなたの Android 用の広告ユニットIDに置き換えてください
 #elif UNITY_IOS
         adUnitId = "ca-app-pub-6018673196408347/1468198831"; // あなたの iOS 用の広告ユニットIDに置き換えてください
 #else
@@ -136,6 +136,9 @@ public class InterstitialAdManager : MonoBehaviour
         interstitialAd.OnAdFullScreenContentClosed += () =>
         {
             Debug.Log("Interstitial ad full screen content closed.");
+
+            OnAdClosed?.Invoke();
+
             LoadInterstitialAd();
         };
         // 広告がフルスクリーンコンテンツの表示に失敗したとき
