@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameMasterScript : MonoBehaviour
@@ -12,6 +10,7 @@ public class GameMasterScript : MonoBehaviour
     public double resultTime;
     private bool isProcessing = false;
     private const string HighScoreKey = "HighScore";
+    private const string ChallengeCountKey = "ChallengeCount";
 
     public double highScore = 0.0;
     public bool isNewHighScore = false;
@@ -54,7 +53,6 @@ public class GameMasterScript : MonoBehaviour
         double resultTimeDouble = double.Parse(resultTimeString);
 
         isNewHighScore = SaveResultTime(resultTimeDouble);
-
         resultTime = resultTimeDouble;
 
         string leaderboardID = "com.infinity.spinningball.highscoreboard";
@@ -62,7 +60,31 @@ public class GameMasterScript : MonoBehaviour
         GameCenterManager.Instance.ReportScore(resultTimeDouble, leaderboardID);
         GameCenterManager.Instance.ReportScore(resultTimeDouble, weeklyLeaderboardID);
 
+        IncrementChallengeCount();
+
         SceneManager.LoadScene("Ranking", LoadSceneMode.Additive);
+    }
+
+    private void IncrementChallengeCount()
+    {
+        int challengeCount = PlayerPrefs.GetInt(ChallengeCountKey, 0);
+        challengeCount++;
+        PlayerPrefs.SetInt(ChallengeCountKey, challengeCount);
+        PlayerPrefs.Save();
+
+        double progress10 = Mathf.Min((challengeCount / 10.0f) * 100.0f, 100.0f);
+        GameCenterManager.Instance.ReportAchievement("challenge_10", progress10);
+
+        double progress100 = Mathf.Min((challengeCount / 100.0f) * 100.0f, 100.0f);
+        GameCenterManager.Instance.ReportAchievement("challenge_100", progress100);
+
+        double progress1000 = Mathf.Min((challengeCount / 1000.0f) * 100.0f, 100.0f);
+        GameCenterManager.Instance.ReportAchievement("challenge_1000", progress1000);
+
+        double progress10000 = Mathf.Min((challengeCount / 10000.0f) * 100.0f, 100.0f);
+        GameCenterManager.Instance.ReportAchievement("challenge_10000", progress10000);
+
+        Debug.Log("現在のチャレンジ回数: " + challengeCount);
     }
 
     bool SaveResultTime(double time)

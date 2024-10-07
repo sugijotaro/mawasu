@@ -115,4 +115,29 @@ public class GameCenterManager : MonoBehaviour
         }
         #endif
     }
+
+    public void ReportAchievement(string achievementID, double progress)
+    {
+        #if UNITY_IOS
+        if (Social.localUser.authenticated)
+        {
+            Social.ReportProgress(achievementID, progress, success =>
+            {
+                if (success)
+                {
+                    Debug.Log($"達成項目 {achievementID} を授与しました");
+                    FirebaseAnalytics.LogEvent("achievement_unlocked", new Parameter("achievement_id", achievementID));
+                }
+                else
+                {
+                    Debug.Log($"達成項目 {achievementID} の授与に失敗しました");
+                }
+            });
+        }
+        else
+        {
+            Debug.Log("ユーザーが認証されていません");
+        }
+        #endif
+    }
 }
