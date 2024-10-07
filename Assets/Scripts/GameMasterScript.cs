@@ -72,17 +72,29 @@ public class GameMasterScript : MonoBehaviour
         PlayerPrefs.SetInt(ChallengeCountKey, challengeCount);
         PlayerPrefs.Save();
 
-        double progress10 = Mathf.Min((challengeCount / 10.0f) * 100.0f, 100.0f);
-        GameCenterManager.Instance.ReportAchievement("challenge_10", progress10);
+        if (challengeCount <= 100)
+        {
+            double progress10 = Mathf.Min((challengeCount / 10.0f) * 100.0f, 100.0f);
+            GameCenterManager.Instance.ReportAchievement("challenge_10", progress10);
+        }
 
-        double progress100 = Mathf.Min((challengeCount / 100.0f) * 100.0f, 100.0f);
-        GameCenterManager.Instance.ReportAchievement("challenge_100", progress100);
+        if (challengeCount >= 10 && challengeCount <= 1000)
+        {
+            double progress100 = Mathf.Min((challengeCount / 100.0f) * 100.0f, 100.0f);
+            GameCenterManager.Instance.ReportAchievement("challenge_100", progress100);
+        }
 
-        double progress1000 = Mathf.Min((challengeCount / 1000.0f) * 100.0f, 100.0f);
-        GameCenterManager.Instance.ReportAchievement("challenge_1000", progress1000);
+        if (challengeCount >= 100 && challengeCount <= 10000)
+        {
+            double progress1000 = Mathf.Min((challengeCount / 1000.0f) * 100.0f, 100.0f);
+            GameCenterManager.Instance.ReportAchievement("challenge_1000", progress1000);
+        }
 
-        double progress10000 = Mathf.Min((challengeCount / 10000.0f) * 100.0f, 100.0f);
-        GameCenterManager.Instance.ReportAchievement("challenge_10000", progress10000);
+        if (challengeCount >= 1000)
+        {
+            double progress10000 = Mathf.Min((challengeCount / 10000.0f) * 100.0f, 100.0f);
+            GameCenterManager.Instance.ReportAchievement("challenge_10000", progress10000);
+        }
 
         Debug.Log("現在のチャレンジ回数: " + challengeCount);
     }
