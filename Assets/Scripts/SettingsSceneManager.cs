@@ -9,6 +9,8 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
     public Button removeAdsButton;
     public Button restorePurchasesButton;
     public Button writeReviewButton;
+    public Button toTitleButton;
+    public Button termsAndPrivacyButton;
 
     // Unity IAP 関連
     private IStoreController storeController;
@@ -23,6 +25,8 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
         removeAdsButton.onClick.AddListener(OnRemoveAdsButtonClicked);
         restorePurchasesButton.onClick.AddListener(OnRestorePurchasesButtonClicked);
         writeReviewButton.onClick.AddListener(OnWriteReviewButtonClicked);
+        toTitleButton.onClick.AddListener(ToTitleButtonTapped);
+        termsAndPrivacyButton.onClick.AddListener(OnTermsAndPrivacyButtonClicked);
 
         // Unity IAP の初期化
         InitializePurchasing();
@@ -120,6 +124,12 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
 #endif
     }
 
+    // 「利用規約・プライバシーポリシー」ボタンがクリックされたとき
+    public void OnTermsAndPrivacyButtonClicked()
+    {
+        Application.OpenURL("https://infinity888.jp/products/spinningball/");
+    }
+
     // IStoreListener の実装
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
     {
@@ -138,11 +148,6 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
         if (String.Equals(args.purchasedProduct.definition.id, removeAdsProductID, StringComparison.Ordinal))
         {
             Debug.Log("広告削除の購入が成功しました");
-
-            // 広告を削除する処理をここに追加
-            // 例: ゲーム内で広告を表示するスクリプトのフラグをオフにする
-            // AdManager.Instance.DisableAds();
-
             // 購入情報を保存
             PlayerPrefs.SetInt("AdsRemoved", 1);
             PlayerPrefs.Save();
@@ -178,9 +183,9 @@ public class SettingsSceneManager : MonoBehaviour, IStoreListener
         {
             if (InterstitialAdManager.Instance.IsReady)
             {
-                Debug.Log("インタースティシャル");
-                InterstitialAdManager.Instance.ShowInterstitial();
+                Debug.Log("インタースティシャル広告を表示します");
                 InterstitialAdManager.Instance.OnAdClosed += OnInterstitialAdClosed;
+                InterstitialAdManager.Instance.ShowInterstitial();
             }
             else
             {
